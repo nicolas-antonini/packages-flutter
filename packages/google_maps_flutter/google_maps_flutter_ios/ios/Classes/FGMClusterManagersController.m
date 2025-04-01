@@ -41,14 +41,27 @@
 }
 
 - (void)addClusterManager:(NSString *)identifier {
+  // Default buckets used internally by GMUDefaultClusterIconGenerator
+  NSArray<NSNumber *> *defaultBuckets = @[@10, @20, @50, @100, @200, @500, @1000];
+
+  // Create an array of black colors, one for each bucket
+  NSMutableArray<UIColor *> *blackColors = [NSMutableArray array];
+  for (NSUInteger i = 0; i < defaultBuckets.count; i++) {
+    [blackColors addObject:[UIColor blackColor]];
+  }
+
+  // Create the icon generator with black backgrounds and default buckets
+  id<GMUClusterIconGenerator> iconGenerator =
+      [[GMUDefaultClusterIconGenerator alloc] initWithBuckets:defaultBuckets
+                                             backgroundColors:blackColors];
+
   id<GMUClusterAlgorithm> algorithm = [[GMUNonHierarchicalDistanceBasedAlgorithm alloc] init];
-  id<GMUClusterIconGenerator> iconGenerator = [[GMUDefaultClusterIconGenerator alloc] init];
   id<GMUClusterRenderer> renderer =
       [[GMUDefaultClusterRenderer alloc] initWithMapView:self.mapView
                                     clusterIconGenerator:iconGenerator];
+
   self.clusterManagerIdentifierToManagers[identifier] =
       [[GMUClusterManager alloc] initWithMap:self.mapView algorithm:algorithm renderer:renderer];
-  ;
 }
 
 - (void)removeClusterManagersWithIdentifiers:(NSArray<NSString *> *)identifiers {
