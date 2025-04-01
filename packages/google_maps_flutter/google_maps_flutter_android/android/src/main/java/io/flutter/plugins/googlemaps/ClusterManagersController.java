@@ -211,6 +211,11 @@ class ClusterManagersController
     }
 
     @Override
+    public int getColor(int clusterSize) {
+      return Color.argb(255, 0, 0, 0);
+    }
+
+    @Override
     protected void onBeforeClusterItemRendered(
         @NonNull T item, @NonNull MarkerOptions markerOptions) {
       // Builds new markerOptions for new marker created by the ClusterRenderer under
